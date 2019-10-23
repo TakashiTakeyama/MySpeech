@@ -9,7 +9,36 @@
     <script>
     'user strict';
     {
-      
+     const btn = document.querySelector('button');
+     const speech = new webkitSpeechRecognition();
+     speech.lang = 'en-US';
+
+     btn.addEventListener('click', () => {
+      // console.log('button clicked!');
+      btn.disabled = true;
+      speech.start();
+     });
+
+     speech.onsoundstart = () => {
+       btn.textContent = 'Processing...'
+     }
+
+     speech.onsoundstart = () => {
+       btn.textContent = 'Waiting...'
+     }
+
+     speech.onresult = (e) => {
+      //  console.log(e);
+       speech.stop();
+       if (e.results[0].isFinal) {
+         console.log(e.results[0][0].transcript);
+         document.body.style.background = e.results[0][0].transcript;
+       }
+     };
+
+     speech.onend = () => {
+       speech.start();
+     };
     }
     </script>
   </body>
